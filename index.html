@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Allianz Market</title>
-
     <link rel="stylesheet" href="style.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -17,55 +13,28 @@
 
     <!-- AUTH -->
     <section id="authPage" class="page">
-
-        <div class="logo">
-            ALLIANZ <span>MARKET</span>
-        </div>
-
-        <p class="subtitle">
-            CAR PARKING MULTIPLAYER
-        </p>
+        <div class="logo">ALLIANZ <span>MARKET</span></div>
+        <p class="subtitle">CAR PARKING MULTIPLAYER</p>
 
         <div class="authBox">
+            <h2 id="authTitle">Регистрация</h2>
 
-            <h2 id="authTitle">
-                Регистрация
-            </h2>
+            <input id="authNick" type="text" placeholder="Ник" autocomplete="username">
 
-            <input
-                id="authNick"
-                type="text"
-                placeholder="Ник"
-                autocomplete="username"
-            >
+            <input id="authTelegram" type="text" placeholder="Telegram @username">
 
-            <input
-                id="authTelegram"
-                type="text"
-                placeholder="Telegram @username"
-            >
+            <input id="authPassword" type="password" placeholder="Пароль" autocomplete="current-password">
 
-            <input
-                id="authPassword"
-                type="password"
-                placeholder="Пароль"
-                autocomplete="current-password"
-            >
-
-            <button id="authButton">
+            <button id="authButton" type="button">
                 ЗАРЕГИСТРИРОВАТЬСЯ
             </button>
 
-            <button
-                class="secondary"
-                id="authSwitch">
+            <button class="secondary" id="authSwitch" type="button">
                 У МЕНЯ ЕСТЬ АККАУНТ
             </button>
 
             <p id="authMessage"></p>
-
         </div>
-
     </section>
 
 
@@ -73,55 +42,24 @@
     <section id="mainPage" class="hidden">
 
         <header>
+            <div class="logo small">ALLIANZ <span>MARKET</span></div>
 
-            <div class="logo small">
-                ALLIANZ <span>MARKET</span>
-            </div>
-
-            <button
-                class="menuButton"
-                id="menuButton">
-                ☰
-            </button>
-
+            <button id="menuButton" class="menuButton" type="button">☰</button>
         </header>
 
 
         <!-- MENU -->
         <nav id="menu">
 
-            <button data-section="home">
-                🏠 Главная
-            </button>
+            <button type="button" data-section="home">🏠 Главная</button>
+            <button type="button" data-section="cars">🚗 Машины</button>
+            <button type="button" data-section="market">🛒 Market</button>
+            <button type="button" data-section="users">👥 Все пользователи</button>
+            <button type="button" data-section="gg">🛠️ GG Услуга</button>
+            <button type="button" data-section="worker">👷 Стать работником GG</button>
+            <button type="button" data-section="profile">👤 Профиль</button>
 
-            <button data-section="cars">
-                🚗 Машины
-            </button>
-
-            <button data-section="market">
-                🛒 Market
-            </button>
-
-            <button data-section="users">
-                👥 Все пользователи
-            </button>
-
-            <button data-section="gg">
-                🛠️ GG Услуга
-            </button>
-
-            <button data-section="worker">
-                👷 Стать работником GG
-            </button>
-
-            <button data-section="profile">
-                👤 Профиль
-            </button>
-
-            <button
-                id="adminMenuButton"
-                class="adminButton"
-                data-section="admin">
+            <button id="adminMenuButton" class="adminOnly" type="button" data-section="admin">
                 🛡️ Админ-панель
             </button>
 
@@ -131,179 +69,88 @@
         <main>
 
             <!-- HOME -->
-            <section
-                id="home"
-                class="content active">
+            <section id="home" class="content active">
+                <h1>Добро пожаловать 👋</h1>
+                <p>Это Allianz Market.</p>
 
-                <div class="hero">
-
-                    <h1>
-                        Добро пожаловать 👋
-                    </h1>
-
-                    <p>
-                        Allianz Market — площадка
-                        для Car Parking Multiplayer.
-                    </p>
-
+                <div class="homeCard">
+                    <h2>🚗 Машины</h2>
+                    <p>Покупка и продажа машин.</p>
                 </div>
 
-
-                <div class="homeGrid">
-
-                    <div class="homeCard">
-                        <h2>🚗 Машины</h2>
-                        <p>
-                            Покупка и продажа автомобилей.
-                        </p>
-
-                        <button data-section="cars">
-                            Добавить машину
-                        </button>
-                    </div>
-
-
-                    <div class="homeCard">
-                        <h2>🛠️ GG Услуга</h2>
-                        <p>
-                            Создай заявку и найди работника.
-                        </p>
-
-                        <button data-section="gg">
-                            Открыть GG
-                        </button>
-                    </div>
-
-
-                    <div class="homeCard">
-                        <h2>👥 Пользователи</h2>
-                        <p>
-                            Посмотреть участников Allianz Market.
-                        </p>
-
-                        <button data-section="users">
-                            Открыть список
-                        </button>
-                    </div>
-
+                <div class="homeCard">
+                    <h2>🛠️ GG Услуга</h2>
+                    <p>Заказ услуг у работников.</p>
                 </div>
-
             </section>
 
 
             <!-- CARS -->
-            <section
-                id="cars"
-                class="content">
-
+            <section id="cars" class="content">
                 <h1>🚗 Машины</h1>
 
                 <div class="formCard">
 
-                    <input
-                        id="carName"
-                        placeholder="Название машины"
-                    >
+                    <input id="carName" placeholder="Название машины">
 
-                    <input
-                        id="carPhoto"
-                        placeholder="Ссылка на фото"
-                    >
+                    <input id="carPhoto" placeholder="Ссылка на фото">
 
-                    <textarea
-                        id="carDescription"
-                        placeholder="Описание">
-                    </textarea>
+                    <textarea id="carDescription"
+                              placeholder="Описание"></textarea>
 
-                    <textarea
-                        id="carStats"
-                        placeholder="Характеристики">
-                    </textarea>
+                    <textarea id="carStats"
+                              placeholder="Характеристики"></textarea>
 
-                    <input
-                        id="carPrice"
-                        placeholder="Цена"
-                    >
+                    <input id="carPrice" placeholder="Цена">
 
-                    <button id="addCarButton">
+                    <button id="addCarButton" type="button">
                         ➕ ОПУБЛИКОВАТЬ
                     </button>
 
                 </div>
-
             </section>
 
 
             <!-- MARKET -->
-            <section
-                id="market"
-                class="content">
-
-                <h1>
-                    🛒 Allianz Market
-                </h1>
-
+            <section id="market" class="content">
+                <h1>🛒 Allianz Market</h1>
                 <div id="carList"></div>
-
             </section>
 
 
             <!-- USERS -->
-            <section
-                id="users"
-                class="content">
-
-                <h1>
-                    👥 Все пользователи
-                </h1>
-
+            <section id="users" class="content">
+                <h1>👥 Все пользователи</h1>
                 <div id="userList"></div>
-
             </section>
 
 
             <!-- PUBLIC PROFILE -->
-            <section
-                id="publicProfile"
-                class="content">
-
-                <button
-                    class="secondary backButton"
-                    data-section="users">
+            <section id="publicProfile" class="content">
+                <button class="secondary backButton" type="button" data-section="users">
                     ← Назад
                 </button>
 
                 <div id="publicProfileBox"></div>
-
             </section>
 
 
             <!-- GG -->
-            <section
-                id="gg"
-                class="content">
+            <section id="gg" class="content">
 
-                <h1>
-                    🛠️ GG Услуга
-                </h1>
+                <h1>🛠️ GG Услуга</h1>
 
                 <div class="formCard">
 
-                    <h2>
-                        Какая услуга нужна?
-                    </h2>
+                    <h2>Какая услуга нужна?</h2>
 
-                    <input
-                        id="ggTitle"
-                        placeholder="Например: нужна GG услуга"
-                    >
+                    <input id="ggTitle"
+                           placeholder="Например: нужна помощь">
 
-                    <textarea
-                        id="ggDescription"
-                        placeholder="Опишите, что вам нужно">
-                    </textarea>
+                    <textarea id="ggDescription"
+                              placeholder="Опишите, что вам нужно"></textarea>
 
-                    <button id="createGGButton">
+                    <button id="createGGButton" type="button">
                         📩 СОЗДАТЬ ЗАКАЗ
                     </button>
 
@@ -315,32 +162,24 @@
 
 
             <!-- WORKER -->
-            <section
-                id="worker"
-                class="content">
+            <section id="worker" class="content">
 
-                <h1>
-                    👷 Стать работником GG
-                </h1>
+                <h1>👷 Стать работником GG</h1>
 
                 <div class="formCard">
 
                     <p>
-                        Напишите, почему хотите стать работником
-                        и какие услуги хотите выполнять.
+                        Заполните заявку. Не отправляйте пароль
+                        или другие секретные данные.
                     </p>
 
-                    <textarea
-                        id="workerReason"
-                        placeholder="Почему хотите стать работником?">
-                    </textarea>
+                    <textarea id="workerReason"
+                              placeholder="Почему хотите стать работником?"></textarea>
 
-                    <textarea
-                        id="workerService"
-                        placeholder="Какие услуги будете выполнять?">
-                    </textarea>
+                    <textarea id="workerService"
+                              placeholder="Какие услуги хотите выполнять?"></textarea>
 
-                    <button id="applyWorkerButton">
+                    <button id="applyWorkerButton" type="button">
                         📩 ОТПРАВИТЬ ЗАЯВКУ
                     </button>
 
@@ -352,25 +191,17 @@
 
 
             <!-- PROFILE -->
-            <section
-                id="profile"
-                class="content">
+            <section id="profile" class="content">
 
-                <h1>
-                    👤 Мой профиль
-                </h1>
+                <h1>👤 Мой профиль</h1>
 
                 <div id="myProfile"></div>
 
-                <button
-                    class="danger"
-                    id="logoutButton">
+                <button id="logoutButton" class="danger" type="button">
                     🚪 ВЫЙТИ
                 </button>
 
-                <button
-                    class="danger"
-                    id="deleteAccountButton">
+                <button id="deleteAccountButton" class="danger" type="button">
                     🗑️ УДАЛИТЬ АККАУНТ
                 </button>
 
@@ -378,17 +209,9 @@
 
 
             <!-- ADMIN -->
-            <section
-                id="admin"
-                class="content">
+            <section id="admin" class="content">
 
-                <h1>
-                    🛡️ Админ-панель
-                </h1>
-
-                <div class="adminInfo">
-                    Только владелец и администраторы.
-                </div>
+                <h1>🛡️ Админ-панель</h1>
 
                 <div id="adminList"></div>
 
@@ -400,29 +223,21 @@
 
 
     <!-- DELETE MODAL -->
-    <div
-        id="deleteModal"
-        class="modal">
+    <div id="deleteModal" class="modal">
 
         <div class="modalBox">
 
-            <h2>
-                ⚠️ Удалить аккаунт?
-            </h2>
+            <h2>⚠️ Удалить аккаунт?</h2>
 
             <p>
-                Это действие нельзя отменить.
+                Вы действительно хотите удалить свой профиль?
             </p>
 
-            <button
-                class="danger"
-                id="confirmDeleteButton">
+            <button id="confirmDeleteButton" class="danger" type="button">
                 УДАЛИТЬ
             </button>
 
-            <button
-                class="secondary"
-                id="closeDeleteButton">
+            <button id="closeDeleteButton" class="secondary" type="button">
                 ОТМЕНА
             </button>
 
@@ -433,6 +248,10 @@
 </div>
 
 
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- YOUR JS -->
 <script src="script.js"></script>
 
 </body>
