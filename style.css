@@ -1,0 +1,49 @@
+*{box-sizing:border-box}
+body{margin:0;background:#0b0d12;color:#f4f5f7;font-family:Arial,sans-serif}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;background:#252a34;color:#fff}
+button:hover{filter:brightness(1.12)}
+input,textarea{width:100%;padding:13px;margin:7px 0 14px;border:1px solid #343a46;border-radius:10px;background:#151922;color:#fff;outline:none}
+textarea{min-height:100px;resize:vertical}
+label{display:block;color:#b8bdc8;font-size:14px}
+.page{min-height:100vh}
+.hidden{display:none!important}
+.auth-card{width:min(430px,92%);margin:7vh auto;padding:28px;background:#11151d;border:1px solid #292f3a;border-radius:18px;box-shadow:0 15px 50px #0008}
+.logo{font-weight:900;letter-spacing:1px;font-size:22px;margin-bottom:24px}
+.logo span{color:#8b5cf6}
+h1{font-size:28px}
+h2{margin-top:0}
+.primary{width:100%;background:#7c3aed;margin-top:5px}
+.link-button{background:transparent;color:#a78bfa;width:100%;margin-top:5px}
+.message{min-height:22px;color:#aaa}
+header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #252a34;background:#0f1219;position:sticky;top:0;z-index:5}
+header .logo{margin:0}
+.menu-button{font-size:23px}
+.menu{display:none;position:fixed;right:12px;top:68px;width:230px;padding:8px;background:#141922;border:1px solid #303744;border-radius:14px;z-index:10;box-shadow:0 12px 35px #0009}
+.menu button{display:block;width:100%;text-align:left;margin:3px 0;background:transparent}
+main{width:min(1100px,94%);margin:25px auto}
+.content{display:none}
+.content.active{display:block}
+.hero{padding:30px;border:1px solid #292f3a;border-radius:18px;background:linear-gradient(135deg,#171b27,#10131a)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px;margin-top:18px}
+.homeCard,.carCard,.userCard,.orderCard,.profileCard,.adminUser,.form-card{padding:20px;background:#11151d;border:1px solid #292f3a;border-radius:15px}
+.form-card{margin:15px 0}
+.carCard img{width:100%;max-height:240px;object-fit:cover;border-radius:10px;margin-bottom:12px}
+.carDescription{white-space:pre-wrap;color:#c8ccd5}
+.price{font-size:20px;font-weight:800;margin:15px 0;color:#c4b5fd}
+.userCard{display:flex;align-items:center;gap:14px}
+.userInfo{flex:1}
+.avatar{font-size:38px}
+.role{color:#a78bfa;font-weight:700}
+.danger{background:#b4232c}
+.danger-card{border-color:#57252a}
+.back-button{margin-bottom:15px}
+.adminUser{display:flex;flex-direction:column;gap:9px;margin:10px 0}
+.adminActions{display:flex;flex-wrap:wrap;gap:7px}
+.empty{padding:25px;text-align:center;color:#969daa;border:1px dashed #343a46;border-radius:12px}
+.modal{display:none;position:fixed;inset:0;background:#000b;align-items:center;justify-content:center;z-index:20}
+.modal.show{display:flex}
+.modal-card{width:min(400px,90%);background:#151922;border:1px solid #343a46;border-radius:15px;padding:22px}
+.modal-card button{margin-right:7px}
+a{color:inherit;text-decoration:none}
+@media(max-width:600px){main{width:92%}.auth-card{margin-top:3vh}.adminActions button{flex:1}}

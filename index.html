@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Allianz Market</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div id="authPage" class="page">
+    <div class="auth-card">
+      <div class="logo">ALLIANZ <span>MARKET</span></div>
+      <h1 id="authTitle">Регистрация</h1>
+
+      <label>Ник</label>
+      <input id="authNick" autocomplete="username" placeholder="Например: Anatoliy">
+
+      <label>Юзер</label>
+      <input id="authUsername" autocomplete="username" placeholder="Например: anatoliy123">
+
+      <label>Пароль</label>
+      <input id="authPassword" type="password" autocomplete="current-password" placeholder="Минимум 6 символов">
+
+      <label id="telegramLabel">Telegram</label>
+      <input id="authTelegram" placeholder="@username">
+
+      <button id="authButton" class="primary">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+      <button id="authSwitch" class="link-button">У МЕНЯ ЕСТЬ АККАУНТ</button>
+      <p id="authMessage" class="message"></p>
+    </div>
+  </div>
+
+  <div id="mainPage" class="page hidden">
+    <header>
+      <div class="logo">ALLIANZ <span>MARKET</span></div>
+      <button id="menuButton" class="menu-button">☰</button>
+    </header>
+
+    <nav id="menu" class="menu">
+      <button data-section="home">🏠 Главная</button>
+      <button data-section="market">🚗 Рынок</button>
+      <button data-section="users">👥 Пользователи</button>
+      <button data-section="gg">🛠️ GG-заказы</button>
+      <button data-section="profile">👤 Профиль</button>
+      <button data-section="worker">👷 Стать работником</button>
+      <button id="adminMenuButton" data-section="admin" class="hidden">🛡️ Админ</button>
+      <button id="logoutButton">🚪 Выйти</button>
+    </nav>
+
+    <main>
+      <section id="home" class="content active">
+        <div class="hero">
+          <h1>Добро пожаловать в Allianz Market</h1>
+          <p>Маркет объявлений и услуг для игроков.</p>
+        </div>
+        <div class="grid">
+          <div class="homeCard"><h2>🚗 Машины</h2><p>Размещай свои объявления.</p></div>
+          <div class="homeCard"><h2>🛠️ GG</h2><p>Создавай заказы и находи работников.</p></div>
+          <div class="homeCard"><h2>👥 Пользователи</h2><p>Смотри профили продавцов.</p></div>
+        </div>
+      </section>
+
+      <section id="market" class="content">
+        <h1>🚗 Рынок</h1>
+        <div class="form-card">
+          <h2>Добавить объявление</h2>
+          <input id="carName" placeholder="Название машины">
+          <input id="carPhoto" placeholder="URL фотографии (необязательно)">
+          <textarea id="carDescription" placeholder="Описание"></textarea>
+          <input id="carStats" placeholder="Характеристики (необязательно)">
+          <input id="carPrice" placeholder="Цена">
+          <button id="addCarButton" class="primary">ОПУБЛИКОВАТЬ</button>
+        </div>
+        <div id="carList" class="grid"></div>
+      </section>
+
+      <section id="users" class="content">
+        <h1>👥 Пользователи</h1>
+        <div id="userList" class="grid"></div>
+      </section>
+
+      <section id="publicProfile" class="content">
+        <button class="back-button" data-section="users">← Назад</button>
+        <div id="publicProfileBox"></div>
+      </section>
+
+      <section id="profile" class="content">
+        <h1>👤 Мой профиль</h1>
+        <div id="myProfile"></div>
+        <div class="form-card danger-card">
+          <h2>Удаление профиля</h2>
+          <p>Удаляется профиль и связанные данные.</p>
+          <button id="deleteAccountButton" class="danger">УДАЛИТЬ АККАУНТ</button>
+        </div>
+      </section>
+
+      <section id="gg" class="content">
+        <h1>🛠️ GG-заказы</h1>
+        <div class="form-card">
+          <input id="ggTitle" placeholder="Какая услуга нужна?">
+          <textarea id="ggDescription" placeholder="Описание заказа"></textarea>
+          <button id="createGGButton" class="primary">СОЗДАТЬ ЗАКАЗ</button>
+        </div>
+        <div id="ggOrders" class="grid"></div>
+      </section>
+
+      <section id="worker" class="content">
+        <h1>👷 Стать работником GG</h1>
+        <div class="form-card">
+          <textarea id="workerReason" placeholder="Почему хотите стать работником?"></textarea>
+          <input id="workerService" placeholder="Какую услугу можете выполнять?">
+          <button id="applyWorkerButton" class="primary">ОТПРАВИТЬ ЗАЯВКУ</button>
+          <p id="workerMessage" class="message"></p>
+        </div>
+      </section>
+
+      <section id="admin" class="content">
+        <h1>🛡️ Админ-панель</h1>
+        <div id="adminList"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="deleteModal" class="modal">
+    <div class="modal-card">
+      <h2>Удалить аккаунт?</h2>
+      <p>Это действие нельзя отменить.</p>
+      <button id="confirmDeleteButton" class="danger">Удалить</button>
+      <button id="closeDeleteButton">Отмена</button>
+    </div>
+  </div>
+</body>
+</html>
