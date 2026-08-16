@@ -1,0 +1,660 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #101d31 0,
+            #05070a 45%
+        );
+
+    color: #fff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+    transition: .2s;
+}
+
+button:active {
+    transform: scale(.97);
+}
+
+
+/* LOGO */
+
+.logo {
+    font-size: 32px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: #087cff;
+}
+
+.logo.small {
+    font-size: 22px;
+}
+
+
+/* PAGE */
+
+.page {
+    min-height: 100vh;
+    padding: 35px 15px;
+
+    animation: pageOpen .45s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    margin-top: 8px;
+}
+
+
+/* ANIMATION */
+
+@keyframes pageOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes cardOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* AUTH */
+
+.authBox {
+    width: 100%;
+    max-width: 430px;
+
+    margin: 45px auto;
+
+    padding: 25px;
+
+    background: rgba(13,17,23,.96);
+
+    border:
+        1px solid #172536;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 35px
+        rgba(0,110,255,.15);
+
+    animation: cardOpen .5s ease;
+}
+
+.authBox h2 {
+    margin-top: 0;
+}
+
+
+/* INPUT */
+
+input,
+textarea {
+
+    width: 100%;
+
+    padding: 14px;
+
+    margin: 7px 0;
+
+    background: #080b10;
+
+    color: white;
+
+    border:
+        1px solid #26384d;
+
+    border-radius: 11px;
+
+    font-size: 16px;
+
+    outline: none;
+
+}
+
+textarea {
+    min-height: 105px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #087cff;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(8,124,255,.12);
+}
+
+
+/* BUTTON */
+
+button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 10px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background: #087cff;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+.secondary {
+    background: #151c25;
+}
+
+.danger {
+    background: #b52635;
+}
+
+.adminButton {
+    background: #5130a8 !important;
+}
+
+
+/* MESSAGE */
+
+#authMessage,
+#workerMessage {
+    min-height: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* HEADER */
+
+header {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    padding:
+        15px
+        0
+        20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.menuButton {
+
+    width: 52px;
+
+    margin: 0;
+
+    font-size: 23px;
+}
+
+
+/* MENU */
+
+#menu {
+
+    display: none;
+
+    max-width: 900px;
+
+    margin:
+        0 auto
+        15px;
+
+    padding: 10px;
+
+    background: #0d1117;
+
+    border:
+        1px solid #172536;
+
+    border-radius: 15px;
+
+    animation: cardOpen .25s ease;
+}
+
+#menu button {
+
+    background: transparent;
+
+    text-align: left;
+
+    margin: 2px 0;
+}
+
+#menu button:hover {
+    background: #087cff;
+}
+
+
+/* MAIN */
+
+main {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: auto;
+
+    padding:
+        0
+        10px
+        50px;
+}
+
+
+/* CONTENT */
+
+.content {
+    display: none;
+
+    animation: cardOpen .35s ease;
+}
+
+.content.active {
+    display: block;
+}
+
+.content h1 {
+    margin-top: 25px;
+}
+
+
+/* HERO */
+
+.hero {
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d1724,
+            #0d1117
+        );
+
+    border:
+        1px solid #172536;
+
+    border-radius: 20px;
+
+    margin-bottom: 15px;
+}
+
+
+/* GRID */
+
+.homeGrid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(230px,1fr)
+        );
+
+    gap: 15px;
+}
+
+
+/* CARDS */
+
+.homeCard,
+.formCard,
+.carCard,
+.userCard,
+.orderCard,
+.profileCard,
+.adminUser {
+
+    background: #0d1117;
+
+    border:
+        1px solid #172536;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    margin:
+        15px 0;
+
+    animation: cardOpen .35s ease;
+}
+
+.homeCard {
+    transition: .2s;
+}
+
+.homeCard:hover {
+    border-color: #087cff;
+    transform: translateY(-3px);
+}
+
+
+/* CAR */
+
+.carCard img {
+
+    width: 100%;
+
+    max-height: 320px;
+
+    object-fit: cover;
+
+    border-radius: 13px;
+
+    margin-bottom: 10px;
+}
+
+.carCard h2 {
+    margin-bottom: 6px;
+}
+
+.carDescription {
+
+    color: #aaa;
+
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+}
+
+.price {
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    background: #080b10;
+
+    border-radius: 10px;
+
+    color: #087cff;
+
+    font-weight: 900;
+}
+
+
+/* USER */
+
+.userCard {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.avatar {
+
+    width: 55px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #087cff;
+
+    border-radius: 50%;
+
+    font-size: 25px;
+}
+
+.userInfo {
+    flex: 1;
+}
+
+.userInfo p {
+
+    margin: 5px 0;
+
+    color: #888;
+}
+
+.userCard button {
+
+    width: auto;
+
+    margin: 0;
+
+    padding:
+        9px
+        13px;
+}
+
+
+/* ROLE */
+
+.role {
+
+    display: inline-block;
+
+    padding:
+        5px
+        9px;
+
+    border-radius: 8px;
+
+    background: #151c25;
+
+    color: #8fbaff;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+
+/* MODAL */
+
+.modal {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    background:
+        rgba(0,0,0,.78);
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modalBox {
+
+    width: 100%;
+
+    max-width: 400px;
+
+    padding: 25px;
+
+    background: #0d1117;
+
+    border:
+        1px solid #087cff;
+
+    border-radius: 18px;
+
+    animation: cardOpen .3s ease;
+}
+
+
+/* ADMIN */
+
+.adminInfo {
+
+    padding: 15px;
+
+    background: #141025;
+
+    border-radius: 12px;
+
+    color: #aaa;
+}
+
+.adminUser {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.adminActions {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(130px,1fr)
+        );
+
+    gap: 8px;
+}
+
+.adminActions button {
+    margin: 0;
+}
+
+
+/* EMPTY */
+
+.empty {
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #777;
+
+    background: #0d1117;
+
+    border:
+        1px solid #172536;
+
+    border-radius: 15px;
+}
+
+
+/* LINKS */
+
+a {
+    text-decoration: none;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .logo {
+        font-size: 27px;
+    }
+
+    .authBox {
+        margin-top: 30px;
+        padding: 20px;
+    }
+
+    .userCard {
+        align-items: flex-start;
+    }
+
+    .userCard button {
+        width: 100%;
+    }
+
+}
