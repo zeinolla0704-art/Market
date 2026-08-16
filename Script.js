@@ -1,11 +1,5 @@
 /* =========================================================
-   ALLIANZ MARKET
-   Supabase version
-   ========================================================= */
-
-
-/* =========================================================
-   SUPABASE
+   ALLIANZ MARKET — SUPABASE
    ========================================================= */
 
 const SUPABASE_URL =
@@ -21,93 +15,72 @@ const supabaseClient =
     );
 
 
-/* =========================================================
-   STATE
-   ========================================================= */
-
 let currentUser = null;
 let currentProfile = null;
+let authMode = "register";
 
 
-/* =========================================================
-   DOM
-   ========================================================= */
-
-const $ = id =>
-    document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 
 /* =========================================================
    START
    ========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    init
-);
+document.addEventListener("DOMContentLoaded", init);
 
 
 async function init() {
 
-    $("authButton")
-        .addEventListener(
-            "click",
-            handleAuth
-        );
+    $("authButton").addEventListener(
+        "click",
+        handleAuth
+    );
 
-    $("authSwitch")
-        .addEventListener(
-            "click",
-            switchAuth
-        );
+    $("authSwitch").addEventListener(
+        "click",
+        switchAuth
+    );
 
-    $("menuButton")
-        .addEventListener(
-            "click",
-            toggleMenu
-        );
+    $("menuButton").addEventListener(
+        "click",
+        toggleMenu
+    );
 
-    $("addCarButton")
-        .addEventListener(
-            "click",
-            addCar
-        );
+    $("addCarButton").addEventListener(
+        "click",
+        addCar
+    );
 
-    $("createGGButton")
-        .addEventListener(
-            "click",
-            createGGOrder
-        );
+    $("createGGButton").addEventListener(
+        "click",
+        createGGOrder
+    );
 
-    $("applyWorkerButton")
-        .addEventListener(
-            "click",
-            applyWorker
-        );
+    $("applyWorkerButton").addEventListener(
+        "click",
+        applyWorker
+    );
 
-    $("logoutButton")
-        .addEventListener(
-            "click",
-            logout
-        );
+    $("logoutButton").addEventListener(
+        "click",
+        logout
+    );
 
-    $("deleteAccountButton")
-        .addEventListener(
-            "click",
-            confirmDelete
-        );
+    $("deleteAccountButton").addEventListener(
+        "click",
+        confirmDelete
+    );
 
-    $("confirmDeleteButton")
-        .addEventListener(
-            "click",
-            deleteAccount
-        );
+    $("confirmDeleteButton").addEventListener(
+        "click",
+        deleteAccount
+    );
 
-    $("closeDeleteButton")
-        .addEventListener(
-            "click",
-            closeDelete
-        );
+    $("closeDeleteButton").addEventListener(
+        "click",
+        closeDelete
+    );
 
 
     document
@@ -116,53 +89,55 @@ async function init() {
 
             button.addEventListener(
                 "click",
-                () => {
-
-                    openSection(
-                        button.dataset.section
-                    );
-
-                }
+                () => openSection(
+                    button.dataset.section
+                )
             );
 
         });
 
 
-    const {
-        data
-    } =
-        await supabaseClient
-            .auth
-            .getSession();
+    try {
 
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
 
-    if (data.session) {
+        if (error) {
+            console.error(error);
+        }
 
-        await loadUser(
-            data.session.user
+        if (data && data.session) {
+            await loadUser(data.session.user);
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Ошибка запуска:",
+            error
         );
 
     }
 
 
-    supabaseClient
-        .auth
-        .onAuthStateChange(
-            async (event, session) => {
+    supabaseClient.auth.onAuthStateChange(
+        async (event, session) => {
 
-                if (
-                    session &&
-                    !currentUser
-                ) {
+            if (
+                session &&
+                !currentUser
+            ) {
 
-                    await loadUser(
-                        session.user
-                    );
-
-                }
+                await loadUser(
+                    session.user
+                );
 
             }
-        );
+
+        }
+    );
 
 }
 
@@ -171,19 +146,12 @@ async function init() {
    AUTH
    ========================================================= */
 
-let authMode = "register";
-
-
 function switchAuth() {
 
     if (authMode === "register") {
-
         showLogin();
-
     } else {
-
         showRegister();
-
     }
 
 }
@@ -233,24 +201,20 @@ function showRegister() {
 }
 
 
-/* =========================================================
-   REGISTER / LOGIN
-   ========================================================= */
-
 async function handleAuth() {
 
     if (authMode === "register") {
-
         await register();
-
     } else {
-
         await login();
-
     }
 
 }
 
+
+/* =========================================================
+   REGISTER
+   ========================================================= */
 
 function makeEmail(nick) {
 
@@ -263,10 +227,8 @@ function makeEmail(nick) {
                 "_"
             );
 
-    return (
-        normalized +
-        "@allianz-market.local"
-    );
+    return normalized +
+        "@allianz-market.local";
 
 }
 
@@ -274,32 +236,22 @@ function makeEmail(nick) {
 async function register() {
 
     const nick =
-        $("authNick")
-            .value
-            .trim();
+        $("authNick").value.trim();
 
     const telegram =
-        $("authTelegram")
-            .value
-            .trim();
+        $("authTelegram").value.trim();
 
     const password =
-        $("authPassword")
-            .value;
+        $("authPassword").value;
 
     const message =
         $("authMessage");
 
 
-    message.style.color =
-        "#ff4d4d";
+    message.style.color = "#ff4d4d";
 
 
-    if (
-        !nick ||
-        !telegram ||
-        !password
-    ) {
+    if (!nick || !telegram || !password) {
 
         message.innerText =
             "❌ Заполните все поля";
@@ -329,9 +281,7 @@ async function register() {
     }
 
 
-    if (
-        !telegram.startsWith("@")
-    ) {
+    if (!telegram.startsWith("@")) {
 
         message.innerText =
             "❌ Telegram должен начинаться с @";
@@ -341,59 +291,46 @@ async function register() {
     }
 
 
-    message.style.color =
-        "#aaa";
-
-    message.innerText =
-        "⏳ Регистрация...";
+    message.style.color = "#aaa";
+    message.innerText = "⏳ Регистрация...";
 
 
     try {
 
-        const email =
-            makeEmail(nick);
+        const email = makeEmail(nick);
 
 
         const {
             data,
             error
-        } =
-            await supabaseClient
-                .auth
-                .signUp({
+        } = await supabaseClient.auth.signUp({
 
-                    email,
-                    password,
+            email,
+            password,
 
-                    options: {
+            options: {
+                data: {
+                    nick,
+                    telegram
+                }
+            }
 
-                        data: {
-
-                            nick,
-                            telegram
-
-                        }
-
-                    }
-
-                });
+        });
 
 
-        if (error)
+        if (error) {
             throw error;
+        }
 
 
-        if (!data.user)
+        if (!data.user) {
+
             throw new Error(
                 "Не удалось создать аккаунт"
             );
 
+        }
 
-        /*
-         * Если подтверждение email включено
-         * в Supabase, вход может потребовать
-         * подтверждение.
-         */
 
         message.style.color =
             "#00d26a";
@@ -405,40 +342,55 @@ async function register() {
         $("authPassword").value = "";
 
 
-        setTimeout(
-            showLogin,
-            900
-        );
+        /*
+         * Если в Supabase включено
+         * подтверждение email, пользователь
+         * может получить соответствующее
+         * состояние регистрации.
+         */
 
+        if (!data.session) {
+
+            message.innerText =
+                "✅ Аккаунт создан. Теперь войдите.";
+
+            setTimeout(
+                showLogin,
+                1200
+            );
+
+        }
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "REGISTER ERROR:",
+            error
+        );
 
         message.style.color =
             "#ff4d4d";
 
         message.innerText =
             "❌ " +
-            getErrorMessage(
-                error
-            );
+            getErrorMessage(error);
 
     }
 
 }
 
 
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
 async function login() {
 
     const nick =
-        $("authNick")
-            .value
-            .trim();
+        $("authNick").value.trim();
 
     const password =
-        $("authPassword")
-            .value;
+        $("authPassword").value;
 
     const message =
         $("authMessage");
@@ -457,11 +409,8 @@ async function login() {
     }
 
 
-    message.style.color =
-        "#aaa";
-
-    message.innerText =
-        "⏳ Вход...";
+    message.style.color = "#aaa";
+    message.innerText = "⏳ Вход...";
 
 
     try {
@@ -474,28 +423,29 @@ async function login() {
             data,
             error
         } =
-            await supabaseClient
-                .auth
-                .signInWithPassword({
+            await supabaseClient.auth.signInWithPassword({
 
-                    email,
-                    password
+                email,
+                password
 
-                });
+            });
 
 
-        if (error)
+        if (error) {
             throw error;
+        }
 
 
         await loadUser(
             data.user
         );
 
-
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "LOGIN ERROR:",
+            error
+        );
 
         message.style.color =
             "#ff4d4d";
@@ -509,7 +459,7 @@ async function login() {
 
 
 /* =========================================================
-   LOAD PROFILE
+   LOAD USER
    ========================================================= */
 
 async function loadUser(user) {
@@ -524,21 +474,24 @@ async function loadUser(user) {
         await supabaseClient
             .from("profiles")
             .select("*")
-            .eq(
-                "id",
-                user.id
-            )
+            .eq("id", user.id)
             .maybeSingle();
 
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "PROFILE ERROR:",
+            error
+        );
+
+        currentProfile = null;
+
+    } else {
+
+        currentProfile = data;
 
     }
-
-
-    currentProfile = data;
 
 
     if (
@@ -546,9 +499,10 @@ async function loadUser(user) {
         currentProfile.blocked
     ) {
 
-        await supabaseClient
-            .auth
-            .signOut();
+        await supabaseClient.auth.signOut();
+
+        currentUser = null;
+        currentProfile = null;
 
         alert(
             "🚫 Ваш аккаунт заблокирован"
@@ -571,9 +525,7 @@ async function loadUser(user) {
     renderProfile();
 
     await renderCars();
-
     await renderUsers();
-
     await renderGGOrders();
 
     updateAdminMenu();
@@ -589,9 +541,12 @@ async function loadUser(user) {
 
 async function logout() {
 
-    await supabaseClient
-        .auth
-        .signOut();
+    try {
+        await supabaseClient.auth.signOut();
+    } catch (error) {
+        console.error(error);
+    }
+
 
     currentUser = null;
     currentProfile = null;
@@ -621,8 +576,7 @@ async function logout() {
 
 function toggleMenu() {
 
-    const menu =
-        $("menu");
+    const menu = $("menu");
 
     menu.style.display =
         menu.style.display === "block"
@@ -636,42 +590,48 @@ function openSection(id) {
 
     document
         .querySelectorAll(".content")
-        .forEach(
-            section =>
-                section.classList
-                    .remove("active")
-        );
+        .forEach(section => {
+
+            section.classList.remove(
+                "active"
+            );
+
+        });
 
 
-    const section =
-        $(id);
+    const section = $(id);
 
-    if (!section)
+    if (!section) {
         return;
+    }
 
 
-    section.classList
-        .add("active");
+    section.classList.add("active");
 
 
     $("menu").style.display =
         "none";
 
 
-    if (id === "market")
+    if (id === "market") {
         renderCars();
+    }
 
-    if (id === "users")
+    if (id === "users") {
         renderUsers();
+    }
 
-    if (id === "profile")
+    if (id === "profile") {
         renderProfile();
+    }
 
-    if (id === "gg")
+    if (id === "gg") {
         renderGGOrders();
+    }
 
-    if (id === "admin")
+    if (id === "admin") {
         renderAdmin();
+    }
 
 }
 
@@ -682,18 +642,17 @@ function openSection(id) {
 
 function renderProfile() {
 
-    if (!currentProfile)
+    if (!currentProfile) {
+
+        $("myProfile").innerHTML = `
+            <div class="empty">
+                Профиль ещё не создан.
+            </div>
+        `;
+
         return;
 
-
-    const workerText =
-        currentProfile.worker
-            ? `
-                <p>
-                    👷 Работник GG
-                </p>
-              `
-            : "";
+    }
 
 
     $("myProfile").innerHTML = `
@@ -705,16 +664,12 @@ function renderProfile() {
             </div>
 
             <h2>
-                ${safe(
-                    currentProfile.nick
-                )}
+                ${safe(currentProfile.nick)}
             </h2>
 
             <p>
                 💬 Telegram:
-                ${safe(
-                    currentProfile.telegram
-                )}
+                ${safe(currentProfile.telegram)}
             </p>
 
             <p>
@@ -728,10 +683,13 @@ function renderProfile() {
                 </span>
             </p>
 
-            ${workerText}
+            ${
+                currentProfile.worker
+                    ? "<p>👷 Работник GG</p>"
+                    : ""
+            }
 
         </div>
-
     `;
 
 }
@@ -743,41 +701,29 @@ function renderProfile() {
 
 async function addCar() {
 
-    if (!currentUser)
+    if (!currentUser) {
+        alert("❌ Сначала войдите в аккаунт");
         return;
+    }
 
 
     const name =
-        $("carName")
-            .value
-            .trim();
+        $("carName").value.trim();
 
     const photo =
-        $("carPhoto")
-            .value
-            .trim();
+        $("carPhoto").value.trim();
 
     const description =
-        $("carDescription")
-            .value
-            .trim();
+        $("carDescription").value.trim();
 
     const stats =
-        $("carStats")
-            .value
-            .trim();
+        $("carStats").value.trim();
 
     const price =
-        $("carPrice")
-            .value
-            .trim();
+        $("carPrice").value.trim();
 
 
-    if (
-        !name ||
-        !description ||
-        !price
-    ) {
+    if (!name || !description || !price) {
 
         alert(
             "❌ Заполните название, описание и цену"
@@ -795,9 +741,7 @@ async function addCar() {
             .from("cars")
             .insert({
 
-                owner_id:
-                    currentUser.id,
-
+                owner_id: currentUser.id,
                 name,
                 photo,
                 description,
@@ -834,7 +778,6 @@ async function addCar() {
 
 
     await renderCars();
-
     openSection("market");
 
 }
@@ -842,11 +785,11 @@ async function addCar() {
 
 async function renderCars() {
 
-    const list =
-        $("carList");
+    const list = $("carList");
 
-    if (!list)
+    if (!list) {
         return;
+    }
 
 
     const {
@@ -872,20 +815,20 @@ async function renderCars() {
 
     if (error) {
 
+        console.error(error);
+
         list.innerHTML = `
             <div class="empty">
                 ❌ Не удалось загрузить объявления
             </div>
         `;
 
-        console.error(error);
-
         return;
 
     }
 
 
-    if (!data.length) {
+    if (!data || !data.length) {
 
         list.innerHTML = `
             <div class="empty">
@@ -899,109 +842,94 @@ async function renderCars() {
 
 
     list.innerHTML =
-        data
-            .map(car => {
+        data.map(car => {
 
-                const photo =
-                    car.photo
-                        ? `
-                            <img
-                                src="${safeAttr(
-                                    car.photo
-                                )}"
-                                alt="car"
-                            >
-                          `
-                        : "";
+            const photo =
+                car.photo
+                    ? `
+                        <img
+                            src="${safeAttr(car.photo)}"
+                            alt="Машина"
+                        >
+                    `
+                    : "";
 
 
-                return `
+            return `
 
-                    <div class="carCard">
+                <div class="carCard">
 
-                        ${photo}
+                    ${photo}
 
-                        <h2>
-                            ${safe(
-                                car.name
-                            )}
-                        </h2>
+                    <h2>
+                        ${safe(car.name)}
+                    </h2>
 
-                        <p class="carDescription">
-                            ${safe(
-                                car.description
-                            )}
-                        </p>
+                    <p class="carDescription">
+                        ${safe(car.description)}
+                    </p>
 
-                        ${
-                            car.stats
-                                ? `
-                                    <p>
-                                        ⚙️
-                                        ${safe(
-                                            car.stats
-                                        )}
-                                    </p>
-                                  `
-                                : ""
-                        }
+                    ${
+                        car.stats
+                            ? `
+                                <p>
+                                    ⚙️
+                                    ${safe(car.stats)}
+                                </p>
+                            `
+                            : ""
+                    }
 
-                        <div class="price">
-                            💰
-                            ${safe(
-                                car.price
-                            )}
-                        </div>
-
-                        <button
-                            onclick="openUserProfile('${safeJS(
-                                car.owner_id
-                            )}')">
-
-                            👤 Продавец:
-                            ${safe(
-                                car.profiles?.nick ||
-                                "Пользователь"
-                            )}
-
-                        </button>
-
-                        ${
-                            canDeleteCar(car)
-                                ? `
-                                    <button
-                                        class="danger"
-                                        onclick="deleteCar('${safeJS(
-                                            car.id
-                                        )}')">
-                                        🗑️ Удалить
-                                    </button>
-                                  `
-                                : ""
-                        }
-
+                    <div class="price">
+                        💰 ${safe(car.price)}
                     </div>
 
-                `;
+                    <button
+                        type="button"
+                        onclick="openUserProfile('${safeJS(
+                            car.owner_id
+                        )}')">
 
-            })
-            .join("");
+                        👤 Продавец:
+                        ${safe(
+                            car.profiles?.nick ||
+                            "Пользователь"
+                        )}
+
+                    </button>
+
+                    ${
+                        canDeleteCar(car)
+                            ? `
+                                <button
+                                    type="button"
+                                    class="danger"
+                                    onclick="deleteCar('${safeJS(
+                                        car.id
+                                    )}')">
+
+                                    🗑️ Удалить
+
+                                </button>
+                            `
+                            : ""
+                    }
+
+                </div>
+            `;
+
+        }).join("");
 
 }
 
 
-/* =========================================================
-   DELETE CAR
-   ========================================================= */
-
 async function deleteCar(id) {
 
-    if (
-        !confirm(
-            "Удалить это объявление?"
-        )
-    )
+    if (!confirm(
+        "Удалить это объявление?"
+    )) {
         return;
+    }
 
 
     const {
@@ -1032,8 +960,9 @@ async function deleteCar(id) {
 
 function canDeleteCar(car) {
 
-    if (!currentProfile)
+    if (!currentUser || !currentProfile) {
         return false;
+    }
 
 
     return (
@@ -1050,11 +979,11 @@ function canDeleteCar(car) {
 
 async function renderUsers() {
 
-    const list =
-        $("userList");
+    const list = $("userList");
 
-    if (!list)
+    if (!list) {
         return;
+    }
 
 
     const {
@@ -1076,6 +1005,8 @@ async function renderUsers() {
 
     if (error) {
 
+        console.error(error);
+
         list.innerHTML = `
             <div class="empty">
                 ❌ Ошибка загрузки пользователей
@@ -1087,7 +1018,7 @@ async function renderUsers() {
     }
 
 
-    if (!data.length) {
+    if (!data || !data.length) {
 
         list.innerHTML = `
             <div class="empty">
@@ -1101,46 +1032,41 @@ async function renderUsers() {
 
 
     list.innerHTML =
-        data
-            .map(user => `
+        data.map(user => `
 
-                <div class="userCard">
+            <div class="userCard">
 
-                    <div class="avatar">
-                        👤
-                    </div>
+                <div class="avatar">
+                    👤
+                </div>
 
-                    <div class="userInfo">
+                <div class="userInfo">
 
-                        <strong>
-                            ${safe(
-                                user.nick
-                            )}
-                        </strong>
+                    <strong>
+                        ${safe(user.nick)}
+                    </strong>
 
-                        <p>
-                            ${safe(
-                                roleName(
-                                    user.role
-                                )
-                            )}
-                        </p>
-
-                    </div>
-
-                    <button
-                        onclick="openUserProfile('${safeJS(
-                            user.id
-                        )}')">
-
-                        ОТКРЫТЬ
-
-                    </button>
+                    <p>
+                        ${safe(
+                            roleName(user.role)
+                        )}
+                    </p>
 
                 </div>
 
-            `)
-            .join("");
+                <button
+                    type="button"
+                    onclick="openUserProfile('${safeJS(
+                        user.id
+                    )}')">
+
+                    ОТКРЫТЬ
+
+                </button>
+
+            </div>
+
+        `).join("");
 
 }
 
@@ -1179,10 +1105,7 @@ async function openUserProfile(id) {
         await supabaseClient
             .from("cars")
             .select("*")
-            .eq(
-                "owner_id",
-                id
-            )
+            .eq("owner_id", id)
             .order(
                 "created_at",
                 {
@@ -1192,121 +1115,91 @@ async function openUserProfile(id) {
 
 
     const telegram =
-        String(
-            user.telegram || ""
-        )
-            .replace(
-                "@",
-                ""
-            );
+        String(user.telegram || "")
+            .replace(/^@/, "");
 
 
     const carsHTML =
         cars && cars.length
-            ? cars
-                .map(car => `
+            ? cars.map(car => `
 
-                    <div class="homeCard">
+                <div class="homeCard">
 
-                        <h3>
-                            ${safe(
-                                car.name
-                            )}
-                        </h3>
+                    <h3>
+                        ${safe(car.name)}
+                    </h3>
 
-                        <p>
-                            ${safe(
-                                car.description
-                            )}
-                        </p>
+                    <p>
+                        ${safe(car.description)}
+                    </p>
 
-                        <div class="price">
-                            💰
-                            ${safe(
-                                car.price
-                            )}
-                        </div>
-
+                    <div class="price">
+                        💰 ${safe(car.price)}
                     </div>
 
-                `)
-                .join("")
+                </div>
+
+            `).join("")
             : `
                 <div class="empty">
                     Объявлений пока нет.
                 </div>
-              `;
+            `;
 
 
-    $("publicProfileBox")
-        .innerHTML = `
+    $("publicProfileBox").innerHTML = `
 
-            <div class="profileCard">
+        <div class="profileCard">
 
-                <div class="avatar">
-                    👤
-                </div>
-
-                <h1>
-                    ${safe(
-                        user.nick
-                    )}
-                </h1>
-
-                <p>
-                    💬
-                    ${safe(
-                        user.telegram
-                    )}
-                </p>
-
-                <p>
-                    🛡️
-                    <span class="role">
-                        ${safe(
-                            roleName(
-                                user.role
-                            )
-                        )}
-                    </span>
-                </p>
-
-                ${
-                    user.worker
-                        ? `
-                            <p>
-                                👷 Работник GG
-                            </p>
-                          `
-                        : ""
-                }
-
-                <a
-                    href="https://t.me/${encodeURIComponent(
-                        telegram
-                    )}"
-                    target="_blank">
-
-                    <button>
-                        💬 НАПИСАТЬ В TELEGRAM
-                    </button>
-
-                </a>
-
+            <div class="avatar">
+                👤
             </div>
 
-            <h2>
-                🚗 Объявления
-            </h2>
+            <h1>
+                ${safe(user.nick)}
+            </h1>
 
-            ${carsHTML}
+            <p>
+                💬 ${safe(user.telegram)}
+            </p>
 
-        `;
+            <p>
+                🛡️
+                <span class="role">
+                    ${safe(
+                        roleName(user.role)
+                    )}
+                </span>
+            </p>
+
+            ${
+                user.worker
+                    ? "<p>👷 Работник GG</p>"
+                    : ""
+            }
+
+            <a
+                href="https://t.me/${encodeURIComponent(
+                    telegram
+                )}"
+                target="_blank"
+                rel="noopener noreferrer">
+
+                <button type="button">
+                    💬 НАПИСАТЬ В TELEGRAM
+                </button>
+
+            </a>
+
+        </div>
+
+        <h2>🚗 Объявления</h2>
+
+        ${carsHTML}
+    `;
 
 
-    openSection(
-        "publicProfile"
-    );
+    openSection("publicProfile");
 
 }
 
@@ -1317,15 +1210,17 @@ async function openUserProfile(id) {
 
 async function createGGOrder() {
 
+    if (!currentUser) {
+        alert("❌ Сначала войдите");
+        return;
+    }
+
+
     const title =
-        $("ggTitle")
-            .value
-            .trim();
+        $("ggTitle").value.trim();
 
     const description =
-        $("ggDescription")
-            .value
-            .trim();
+        $("ggDescription").value.trim();
 
 
     if (!title || !description) {
@@ -1346,14 +1241,10 @@ async function createGGOrder() {
             .from("gg_orders")
             .insert({
 
-                client_id:
-                    currentUser.id,
-
+                client_id: currentUser.id,
                 title,
                 description,
-
-                status:
-                    "new"
+                status: "new"
 
             });
 
@@ -1386,11 +1277,11 @@ async function createGGOrder() {
 
 async function renderGGOrders() {
 
-    const box =
-        $("ggOrders");
+    const box = $("ggOrders");
 
-    if (!box)
+    if (!box) {
         return;
+    }
 
 
     const {
@@ -1433,7 +1324,7 @@ async function renderGGOrders() {
     }
 
 
-    if (!data.length) {
+    if (!data || !data.length) {
 
         box.innerHTML = `
             <div class="empty">
@@ -1447,105 +1338,87 @@ async function renderGGOrders() {
 
 
     box.innerHTML =
-        data
-            .map(order => {
+        data.map(order => {
 
-                const canTake =
-                    isWorker() &&
-                    !order.worker_id &&
-                    order.client_id !==
-                        currentUser.id;
+            const canTake =
+                isWorker() &&
+                !order.worker_id &&
+                order.client_id !==
+                    currentUser.id;
 
 
-                return `
+            return `
 
-                    <div class="orderCard">
+                <div class="orderCard">
 
-                        <h2>
-                            🛠️
-                            ${safe(
-                                order.title
-                            )}
-                        </h2>
+                    <h2>
+                        🛠️ ${safe(order.title)}
+                    </h2>
 
-                        <p>
-                            ${safe(
-                                order.description
-                            )}
-                        </p>
+                    <p>
+                        ${safe(order.description)}
+                    </p>
 
-                        <p>
-                            👤 Клиент:
-                            ${safe(
-                                order.client?.nick ||
-                                "—"
-                            )}
-                        </p>
+                    <p>
+                        👤 Клиент:
+                        ${safe(
+                            order.client?.nick || "—"
+                        )}
+                    </p>
 
-                        <p>
-                            📌 Статус:
-                            ${safe(
-                                orderStatus(
-                                    order.status
-                                )
-                            )}
-                        </p>
+                    <p>
+                        📌 Статус:
+                        ${safe(
+                            orderStatus(order.status)
+                        )}
+                    </p>
 
-                        ${
-                            order.worker_id
-                                ? `
-                                    <p>
-                                        👷 Работник:
-                                        ${safe(
-                                            order.worker?.nick ||
-                                            "—"
-                                        )}
-                                    </p>
-                                  `
-                                : ""
-                        }
+                    ${
+                        order.worker_id
+                            ? `
+                                <p>
+                                    👷 Работник:
+                                    ${safe(
+                                        order.worker?.nick || "—"
+                                    )}
+                                </p>
+                            `
+                            : ""
+                    }
 
-                        ${
-                            order.price
-                                ? `
-                                    <p class="price">
-                                        💰
-                                        ${safe(
-                                            order.price
-                                        )}
-                                    </p>
-                                  `
-                                : ""
-                        }
+                    ${
+                        order.price
+                            ? `
+                                <p class="price">
+                                    💰 ${safe(order.price)}
+                                </p>
+                            `
+                            : ""
+                    }
 
-                        ${
-                            canTake
-                                ? `
-                                    <button
-                                        onclick="takeOrder('${safeJS(
-                                            order.id
-                                        )}')">
+                    ${
+                        canTake
+                            ? `
+                                <button
+                                    type="button"
+                                    onclick="takeOrder('${safeJS(
+                                        order.id
+                                    )}')">
 
-                                        👷 ВЗЯТЬ ЗАКАЗ
+                                    👷 ВЗЯТЬ ЗАКАЗ
 
-                                    </button>
-                                  `
-                                : ""
-                        }
+                                </button>
+                            `
+                            : ""
+                    }
 
-                    </div>
+                </div>
+            `;
 
-                `;
-
-            })
-            .join("");
+        }).join("");
 
 }
 
-
-/* =========================================================
-   TAKE GG ORDER
-   ========================================================= */
 
 async function takeOrder(id) {
 
@@ -1566,8 +1439,9 @@ async function takeOrder(id) {
         );
 
 
-    if (!price)
+    if (!price) {
         return;
+    }
 
 
     const {
@@ -1577,22 +1451,13 @@ async function takeOrder(id) {
             .from("gg_orders")
             .update({
 
-                worker_id:
-                    currentUser.id,
-
+                worker_id: currentUser.id,
                 price,
-                status:
-                    "worker_assigned"
+                status: "worker_assigned"
 
             })
-            .eq(
-                "id",
-                id
-            )
-            .is(
-                "worker_id",
-                null
-            );
+            .eq("id", id)
+            .is("worker_id", null);
 
 
     if (error) {
@@ -1613,20 +1478,21 @@ async function takeOrder(id) {
 
 
 /* =========================================================
-   WORKER APPLICATION
+   WORKER
    ========================================================= */
 
 async function applyWorker() {
 
+    if (!currentUser) {
+        return;
+    }
+
+
     const reason =
-        $("workerReason")
-            .value
-            .trim();
+        $("workerReason").value.trim();
 
     const service =
-        $("workerService")
-            .value
-            .trim();
+        $("workerService").value.trim();
 
 
     if (!reason || !service) {
@@ -1647,14 +1513,10 @@ async function applyWorker() {
             .from("worker_applications")
             .insert({
 
-                user_id:
-                    currentUser.id,
-
+                user_id: currentUser.id,
                 reason,
                 service,
-
-                status:
-                    "pending"
+                status: "pending"
 
             });
 
@@ -1684,15 +1546,14 @@ async function applyWorker() {
 
 
 /* =========================================================
-   ROLE
+   ROLES
    ========================================================= */
 
 function isOwner() {
 
-    return (
+    return !!(
         currentProfile &&
-        currentProfile.role ===
-            "owner"
+        currentProfile.role === "owner"
     );
 
 }
@@ -1700,13 +1561,11 @@ function isOwner() {
 
 function isAdmin() {
 
-    return (
+    return !!(
         currentProfile &&
         (
-            currentProfile.role ===
-                "owner" ||
-            currentProfile.role ===
-                "admin"
+            currentProfile.role === "owner" ||
+            currentProfile.role === "admin"
         )
     );
 
@@ -1715,12 +1574,11 @@ function isAdmin() {
 
 function isWorker() {
 
-    return (
+    return !!(
         currentProfile &&
         (
             currentProfile.worker === true ||
-            currentProfile.role ===
-                "worker" ||
+            currentProfile.role === "worker" ||
             isAdmin()
         )
     );
@@ -1732,24 +1590,15 @@ function roleName(role) {
 
     const roles = {
 
-        user:
-            "Пользователь",
-
-        worker:
-            "Работник GG",
-
-        admin:
-            "Администратор",
-
-        owner:
-            "Владелец"
+        user: "Пользователь",
+        worker: "Работник GG",
+        admin: "Администратор",
+        owner: "Владелец"
 
     };
 
-    return (
-        roles[role] ||
-        "Пользователь"
-    );
+    return roles[role] ||
+        "Пользователь";
 
 }
 
@@ -1758,30 +1607,22 @@ function orderStatus(status) {
 
     const statuses = {
 
-        new:
-            "Новый",
-
-        worker_assigned:
-            "Работник назначен",
-
-        completed:
-            "Завершён",
-
-        cancelled:
-            "Отменён"
+        new: "Новый",
+        worker_assigned: "Работник назначен",
+        completed: "Завершён",
+        cancelled: "Отменён"
 
     };
 
-    return (
-        statuses[status] ||
-        status
-    );
+    return statuses[status] ||
+        status ||
+        "Неизвестно";
 
 }
 
 
 /* =========================================================
-   ADMIN MENU
+   ADMIN
    ========================================================= */
 
 function updateAdminMenu() {
@@ -1789,28 +1630,18 @@ function updateAdminMenu() {
     const button =
         $("adminMenuButton");
 
-    if (!button)
+    if (!button) {
         return;
-
-
-    if (isAdmin()) {
-
-        button.style.display =
-            "block";
-
-    } else {
-
-        button.style.display =
-            "none";
-
     }
+
+
+    button.style.display =
+        isAdmin()
+            ? "block"
+            : "none";
 
 }
 
-
-/* =========================================================
-   ADMIN PANEL
-   ========================================================= */
 
 async function renderAdmin() {
 
@@ -1829,6 +1660,10 @@ async function renderAdmin() {
 
     const list =
         $("adminList");
+
+    if (!list) {
+        return;
+    }
 
 
     const {
@@ -1850,9 +1685,7 @@ async function renderAdmin() {
 
         list.innerHTML = `
             <div class="empty">
-                ❌ ${safe(
-                    error.message
-                )}
+                ❌ ${safe(error.message)}
             </div>
         `;
 
@@ -1862,118 +1695,101 @@ async function renderAdmin() {
 
 
     list.innerHTML =
-        data
-            .map(user => {
+        data.map(user => {
 
-                const canEdit =
-                    isOwner() &&
-                    user.id !==
-                        currentUser.id;
+            const canEdit =
+                isOwner() &&
+                user.id !== currentUser.id;
 
 
-                return `
+            return `
 
-                    <div class="adminUser">
+                <div class="adminUser">
 
-                        <strong>
-                            👤
-                            ${safe(
-                                user.nick
-                            )}
-                        </strong>
+                    <strong>
+                        👤 ${safe(user.nick)}
+                    </strong>
 
-                        <span class="role">
-                            ${safe(
-                                roleName(
-                                    user.role
-                                )
-                            )}
-                        </span>
+                    <span class="role">
+                        ${safe(
+                            roleName(user.role)
+                        )}
+                    </span>
 
-                        <span>
-                            💬
-                            ${safe(
-                                user.telegram
-                            )}
-                        </span>
+                    <span>
+                        💬 ${safe(user.telegram)}
+                    </span>
 
-                        ${
-                            user.worker
-                                ? `
-                                    <span>
-                                        👷 Работник GG
-                                    </span>
-                                  `
-                                : ""
-                        }
+                    ${
+                        user.worker
+                            ? "<span>👷 Работник GG</span>"
+                            : ""
+                    }
 
-                        ${
-                            user.blocked
-                                ? `
-                                    <span>
-                                        🚫 Заблокирован
-                                    </span>
-                                  `
-                                : ""
-                        }
+                    ${
+                        user.blocked
+                            ? "<span>🚫 Заблокирован</span>"
+                            : ""
+                    }
 
-                        ${
-                            canEdit
-                                ? `
-                                    <div
-                                        class="adminActions">
+                    ${
+                        canEdit
+                            ? `
+                                <div class="adminActions">
 
-                                        <button
-                                            onclick="changeRole('${safeJS(
-                                                user.id
-                                            )}','admin')">
-                                            🛡️ Админ
-                                        </button>
+                                    <button
+                                        type="button"
+                                        onclick="changeRole(
+                                            '${safeJS(user.id)}',
+                                            'admin'
+                                        )">
+                                        🛡️ Админ
+                                    </button>
 
-                                        <button
-                                            onclick="changeRole('${safeJS(
-                                                user.id
-                                            )}','worker')">
-                                            👷 Worker
-                                        </button>
+                                    <button
+                                        type="button"
+                                        onclick="changeRole(
+                                            '${safeJS(user.id)}',
+                                            'worker'
+                                        )">
+                                        👷 Worker
+                                    </button>
 
-                                        <button
-                                            onclick="changeRole('${safeJS(
-                                                user.id
-                                            )}','user')">
-                                            👤 User
-                                        </button>
+                                    <button
+                                        type="button"
+                                        onclick="changeRole(
+                                            '${safeJS(user.id)}',
+                                            'user'
+                                        )">
+                                        👤 User
+                                    </button>
 
-                                        <button
-                                            class="danger"
-                                            onclick="toggleBlock('${safeJS(
-                                                user.id
-                                            )}',${!user.blocked})">
-                                            ${
-                                                user.blocked
-                                                    ? "🔓 Разблокировать"
-                                                    : "🚫 Заблокировать"
-                                            }
-                                        </button>
+                                    <button
+                                        type="button"
+                                        class="danger"
+                                        onclick="toggleBlock(
+                                            '${safeJS(user.id)}',
+                                            ${!user.blocked}
+                                        )">
+                                        ${
+                                            user.blocked
+                                                ? "🔓 Разблокировать"
+                                                : "🚫 Заблокировать"
+                                        }
+                                    </button>
 
-                                    </div>
-                                  `
-                                : ""
-                        }
+                                </div>
+                            `
+                            : ""
+                    }
 
-                    </div>
+                </div>
+            `;
 
-                `;
-
-            })
-            .join("");
+        }).join("");
 
 }
 
-
-/* =========================================================
-   CHANGE ROLE
-   ========================================================= */
 
 async function changeRole(
     userId,
@@ -1996,13 +1812,8 @@ async function changeRole(
     } =
         await supabaseClient
             .from("profiles")
-            .update({
-                role
-            })
-            .eq(
-                "id",
-                userId
-            );
+            .update({ role })
+            .eq("id", userId);
 
 
     if (error) {
@@ -2018,15 +1829,10 @@ async function changeRole(
 
 
     await renderAdmin();
-
     await renderUsers();
 
 }
 
-
-/* =========================================================
-   BLOCK
-   ========================================================= */
 
 async function toggleBlock(
     userId,
@@ -2049,13 +1855,8 @@ async function toggleBlock(
     } =
         await supabaseClient
             .from("profiles")
-            .update({
-                blocked
-            })
-            .eq(
-                "id",
-                userId
-            );
+            .update({ blocked })
+            .eq("id", userId);
 
 
     if (error) {
@@ -2076,7 +1877,7 @@ async function toggleBlock(
 
 
 /* =========================================================
-   DELETE ACCOUNT
+   DELETE PROFILE
    ========================================================= */
 
 function confirmDelete() {
@@ -2099,29 +1900,17 @@ function closeDelete() {
 
 async function deleteAccount() {
 
-    if (!currentUser)
+    if (!currentUser) {
         return;
+    }
 
 
-    const ok =
-        confirm(
-            "Точно удалить аккаунт?"
-        );
-
-
-    if (!ok)
+    if (!confirm(
+        "Точно удалить аккаунт?"
+    )) {
         return;
+    }
 
-
-    /*
-     * Важно:
-     * удаление пользователя Auth
-     * напрямую из браузера невозможно.
-     *
-     * Поэтому удаляем профиль.
-     * Для полного удаления Auth пользователя
-     * лучше сделать Edge Function.
-     */
 
     const {
         error
@@ -2129,10 +1918,7 @@ async function deleteAccount() {
         await supabaseClient
             .from("profiles")
             .delete()
-            .eq(
-                "id",
-                currentUser.id
-            );
+            .eq("id", currentUser.id);
 
 
     if (error) {
@@ -2168,36 +1954,34 @@ function getErrorMessage(error) {
         );
 
 
-    if (
-        msg
-            .toLowerCase()
-            .includes("already registered")
-    ) {
+    const lower =
+        msg.toLowerCase();
 
+
+    if (
+        lower.includes(
+            "already registered"
+        )
+    ) {
         return "Этот аккаунт уже зарегистрирован";
-
     }
 
 
     if (
-        msg
-            .toLowerCase()
-            .includes("password")
+        lower.includes(
+            "password"
+        )
     ) {
-
-        return "Пароль не подходит";
-
+        return "Пароль должен содержать минимум 6 символов";
     }
 
 
     if (
-        msg
-            .toLowerCase()
-            .includes("email")
+        lower.includes(
+            "email"
+        )
     ) {
-
         return "Ошибка данных аккаунта";
-
     }
 
 
@@ -2208,7 +1992,7 @@ function getErrorMessage(error) {
 
 
 /* =========================================================
-   SECURITY HELPERS
+   SECURITY
    ========================================================= */
 
 function safe(value) {
@@ -2216,26 +2000,11 @@ function safe(value) {
     return String(
         value ?? ""
     )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
@@ -2261,4 +2030,4 @@ function safeJS(value) {
             "\\'"
         );
 
-}
+           }
