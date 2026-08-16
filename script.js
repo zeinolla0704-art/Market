@@ -3,8 +3,8 @@
    ========================================================= */
 
 const SUPABASE_URL =
-    "https://pdhmhflnowpevyeboziv.supabase.co";
-
+    "https://pdhmhflnowpevyeboziv.supabase.co/rest/v1/;
+   
 const SUPABASE_KEY =
     "sb_publishable_ocpLnuL_L0M6-WRbFsWMyg_DcggD5vD";
 
